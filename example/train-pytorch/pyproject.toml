@@ -8,10 +8,10 @@ dependencies = [
     "torch",
     "pandas",
     "numpy",
-    "jupyterlab[dev]>=4.3.1",
     "polars>=1.14.0",
     "mlflow-skinny>=2.18.0",
     "scikit-learn>=1.5.2",
+    "model-envelope",
 ]
 
 [build-system]
@@ -23,3 +23,6 @@ dev = [
     "jupyterlab>=4.3.1",
     "mlflow>=2.18.0",
 ]
+
+[tool.uv.sources]
+model-envelope = { path = "../../model-envelope", editable = true }

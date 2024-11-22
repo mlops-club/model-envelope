@@ -1,196 +1,213 @@
-from copy import deepcopy
-from typing import Dict, Set
+from pathlib import Path
+from typing import Sequence, Set
+
+from pipdeptree._discovery import get_installed_distributions
+from pipdeptree._models import PackageDAG
+
+# todo, make this support glob-like wildcard patterns, e.g. pytest*, mypy*, etc.
+COMMON_DEV_LIBS = [
+    # development
+    "pip",
+    "setuptools",
+    "hatch",
+    "poetry",
+    "wheel",
+    "build",
+    "packaging",
+    "pre-commit",
+    "jupyterlab",
+    "ruff",
+    "black",
+    "isort",
+    "mypy",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-asyncio",
+    "pytest-timeout",
+    "pytest-xdist",
+    "pytest-mock",
+    "pytest-asyncio",
+    "pytest-timeout",
+    "pytest-xdist",
+    # serving
+    "fastapi",
+    "uvicorn",
+    "gunicorn",
+    # preprocessing deps that are redundant with serving
+    "psycopg",
+    "sqlalchemy",
+    "snowflake-connector-python",
+    # mlflow and tracking
+    "mlflow",
+    "mlflow-skinny",
+    "model-envelope",
+    # misc
+    "bump2version",
+    "isoduration",
+    "mpmath",
+    "fqdn",
+    "uri-template",
+    "webcolors",
+]
 
 
-def get_python_deps(prune_common_dev_libs: bool = True) -> Set[str]:
-    """Return Python dependencies."""
-    deps_graph = pip_graph()
-
-    common_dev_libs = {"rich", "build", "packaging", "wheel", "tomli"}
-
-    for pkg in common_dev_libs:
-        print(deps_graph)
-        deps_graph = remove_dependency(deps_graph, pkg)
-        print("Removing", pkg)
-        print(deps_graph)
-
-    def recursively_get_keys(d: Dict[str, Dict]) -> Set[str]:
-        """Recursively get all keys from a nested dictionary"""
-        keys = set()
-        for k, v in d.items():
-            keys.add(k)
-            keys.update(recursively_get_keys(v))
-        return keys
-
-    return recursively_get_keys(deps_graph)
-
-
-def pip_freeze() -> Dict[str, str]:
+def get_python_deps(
+    exclude: Sequence[str] | None = None, exclude_common_libs: bool = True
+) -> Set[str]:
     """
-    Get a dictionary of installed packages and their versions.
-
-    Returns:
-        Dict mapping package names to versions
-    """
-    import pkg_resources
-
-    return {dist.key: dist.version for dist in pkg_resources.working_set}
-
-
-def pip_graph() -> Dict[str, Dict]:
-    """
-    Get a nested dictionary representing the dependency graph of installed packages.
-
-    Returns:
-        Nested dict representing the dependency tree
-    """
-    import pkg_resources
-
-    tree = {}
-
-    # Get all installed distributions
-    for dist in pkg_resources.working_set:
-        name = f"{dist.key}=={dist.version}"
-        deps = {}
-
-        # Get direct dependencies
-        for req in dist.requires():
-            # Find the installed version of the dependency
-            dep_dist = pkg_resources.working_set.find(req)
-            if dep_dist:
-                deps[f"{dep_dist.key}=={dep_dist.version}"] = {}
-
-        tree[name] = deps
-
-    return tree
-
-
-def get_package_key(package_spec: str) -> str:
-    """Extract the package name without version or other qualifiers"""
-    # Handle various package specification formats
-    if " @ " in package_spec:  # git/url installs
-        package_spec = package_spec.split(" @ ")[0]
-    if "==" in package_spec:  # version specifier
-        package_spec = package_spec.split("==")[0]
-    if ">=" in package_spec:  # minimum version
-        package_spec = package_spec.split(">=")[0]
-    if "<=" in package_spec:  # maximum version
-        package_spec = package_spec.split("<=")[0]
-    if "~=" in package_spec:  # compatible release
-        package_spec = package_spec.split("~=")[0]
-    return package_spec.strip()
-
-
-def remove_dependency(graph: Dict[str, Dict], package_name: str) -> Dict[str, Dict]:
-    """
-    Remove a package and its unique dependencies from the dependency graph.
-    Dependencies that are required by other packages are preserved.
+    Get Python dependencies, optionally excluding specified packages and their dependency subtrees.
 
     Args:
-        graph: Dependency graph (treated as immutable)
-        package_name: Package name to remove (without version)
+        exclude: Sequence of package names to exclude
+        exclude_common_libs: Whether to exclude common development libraries
 
     Returns:
-        New dependency graph with package and its unique dependencies removed
+        Set of remaining package specifications (name==version)
     """
+    exclude = exclude or []
+    exclude = list(exclude)
+    if exclude_common_libs:
+        exclude.extend(COMMON_DEV_LIBS)
 
-    def get_all_deps(pkg: str, seen: Set[str] = None) -> Set[str]:
-        """Get all dependencies (direct and transitive) for a package"""
-        if seen is None:
-            seen = set()
-        pkg_key = get_package_key(pkg)
-        matching_pkg = next((p for p in graph if get_package_key(p) == pkg_key), None)
-        if not matching_pkg or matching_pkg in seen:
-            return seen
-        seen.add(matching_pkg)
-        for dep in graph[matching_pkg]:
-            get_all_deps(dep, seen)
-        return seen
+    # Get all installed packages
+    pkgs = get_installed_distributions()
+    tree = PackageDAG.from_pkgs(pkgs)
 
-    def get_all_reverse_deps(pkg: str) -> Set[str]:
-        """Get all packages that depend on the given package"""
-        pkg_key = get_package_key(pkg)
-        reverse_deps = set()
-        for parent, deps in graph.items():
-            if any(get_package_key(d) == pkg_key for d in deps) or any(
-                pkg_key == get_package_key(d) for dep in deps for d in get_all_deps(dep)
-            ):
-                reverse_deps.add(parent)
-        return reverse_deps
+    # Get initial set of all packages
+    deps = {f"{pkg.project_name}=={pkg.version}" for pkg in tree.keys()}
 
-    # Create a deep copy to ensure no modification of input
-    new_graph = deepcopy(graph)
+    # Remove each excluded package and its dependency subtree
+    for pkg_to_exclude in exclude:
+        deps -= get_dependency_subtree(tree, pkg_to_exclude)
 
-    # Find the full package spec (with version) in the graph
-    package_to_remove = next(
-        (pkg for pkg in graph if get_package_key(pkg) == package_name), None
+    return deps
+
+
+def write_graph_to_text_file(
+    path: Path,
+    exclude: list[str] | None = None,
+    exclude_common_libs: bool = True,
+) -> None:
+    """
+    Write a text representation of the dependency graph to a file.
+    The format matches the Unix 'tree' command style.
+    """
+    exclude = exclude or []
+    exclude = list(exclude)
+    if exclude_common_libs:
+        exclude.extend(COMMON_DEV_LIBS)
+
+    # Get all installed packages
+    pkgs = get_installed_distributions()
+    tree = PackageDAG.from_pkgs(pkgs)
+
+    # Remove excluded packages and their subtrees
+    to_exclude = set()
+    for pkg_name in exclude:
+        to_exclude.update(get_dependency_subtree(tree, pkg_name))
+
+    # Filter the tree
+    tree = tree.filter_nodes(
+        include=None, exclude={pkg.split("==")[0] for pkg in to_exclude}
     )
-    if not package_to_remove:
-        return new_graph
 
-    # Get all dependencies of the package to remove
-    deps_to_check = get_all_deps(package_to_remove)
+    def render_subtree(pkg, prefix="", is_last=True) -> str:
+        """Recursively render a package's dependencies"""
+        # Choose the correct prefix characters
+        subbranch = "    " if is_last else "│   "
 
-    # Remove the target package
-    del new_graph[package_to_remove]
+        lines = []
+        # Get and sort dependencies
+        deps = sorted(tree[pkg], key=lambda x: x.project_name)
 
-    # For each dependency, check if it's safe to remove
-    for dep in deps_to_check:
-        if get_package_key(dep) == package_name:
-            continue
+        # Add each dependency
+        for i, dep in enumerate(deps):
+            if dep.dist:  # Only show installed dependencies
+                branch = "└── " if i == len(deps) - 1 else "├── "
+                lines.append(
+                    f"{prefix}{branch}{dep.dist.project_name}=={dep.dist.version}"
+                )
+                # Add nested dependencies with proper indentation
+                subdeps = tree[dep.dist]
+                if subdeps:
+                    for line in render_subtree(
+                        dep.dist,
+                        prefix=prefix + subbranch,
+                        is_last=(i == len(deps) - 1),
+                    ).split("\n"):
+                        if line:  # Skip empty lines
+                            lines.append(line)
 
-        # Get all packages that depend on this dependency
-        reverse_deps = get_all_reverse_deps(dep)
+        return "\n".join(lines)
 
-        # Remove package we're removing from reverse deps
-        reverse_deps = {
-            rd for rd in reverse_deps if get_package_key(rd) != package_name
-        }
+    # Start with root packages (those that aren't dependencies of others)
+    all_deps = {
+        dep.project_name for pkg in tree.keys() for dep in tree[pkg] if dep.dist
+    }
+    roots = sorted(
+        [pkg for pkg in tree.keys() if pkg.project_name not in all_deps],
+        key=lambda x: x.project_name,
+    )
 
-        # Remove dependency if it's only used by the package we're removing
-        if not reverse_deps and dep in new_graph:
-            del new_graph[dep]
+    # Build the complete tree text
+    text = []
+    for root in roots:
+        # Add root package name without any prefix
+        text.append(f"{root.project_name}=={root.version}")
+        # Add its dependency subtree
+        subtree = render_subtree(root)
+        if subtree:
+            text.append(subtree)
 
-    return new_graph
+    # Write to file
+    path.write_text("\n".join(text))
 
 
-def _build_rich_tree(deps: Dict[str, Dict], tree) -> None:
-    """Helper to recursively build a rich Tree"""
-    for package, subdeps in deps.items():
-        branch = tree.add(package)
-        if subdeps:
-            _build_rich_tree(subdeps, branch)
+def get_dependency_subtree(tree: PackageDAG, pkg_name: str) -> Set[str]:
+    """
+    Get a package and its entire dependency subtree from a PackageDAG.
+
+    Args:
+        tree: The package dependency graph
+        pkg_name: Name of the package to get subtree for
+
+    Returns:
+        Set of package specifications (name==version) including the package and all its dependencies
+    """
+    # Find the package in the tree
+    pkg = next((p for p in tree.keys() if p.project_name == pkg_name), None)
+    if not pkg:
+        return set()
+
+    # Get all dependencies recursively
+    to_remove = {f"{pkg.project_name}=={pkg.version}"}
+    stack = list(tree[pkg])  # Get direct dependencies
+
+    while stack:
+        dep = stack.pop()
+        if dep.dist:  # Only process installed dependencies
+            dep_spec = f"{dep.dist.project_name}=={dep.dist.version}"
+            if dep_spec not in to_remove:  # Avoid cycles
+                to_remove.add(dep_spec)
+                stack.extend(tree[dep.dist])  # Add this dep's dependencies to process
+
+    return to_remove
 
 
 if __name__ == "__main__":
+    write_graph_to_text_file(
+        Path("requirements-graph-full.txt"), exclude_common_libs=False
+    )
+    write_graph_to_text_file(
+        Path("requirements-graph-model.txt"),
+        exclude_common_libs=False,
+        exclude=["model-envelope"],
+    )
+
     from rich import print
 
-    print(get_python_deps())
-
-# if __name__ == "__main__":
-#     from rich.console import Console
-#     from rich.tree import Tree
-
-#     console = Console()
-
-#     # Print frozen dependencies
-#     console.print("\n[bold]Installed Packages:[/bold]")
-#     frozen = pip_freeze()
-#     for package, version in frozen.items():
-#         console.print(f"{package}=={version}")
-
-#     # Print original dependency graph
-#     console.print("\n[bold]Original Dependency Graph:[/bold]")
-#     graph = pip_graph()
-#     tree = Tree("Dependencies")
-#     _build_rich_tree(graph, tree)
-#     console.print(tree)
-
-#     remove = {"rich", "model-envelope", "build", "packaging", "wheel", "tomli"}
-#     updated_graph = deepcopy(graph)
-#     for pkg in remove:
-#         updated_graph = remove_dependency(updated_graph, pkg)
-
-#     updated_tree = Tree("Dependencies")
-#     _build_rich_tree(updated_graph, updated_tree)
-#     console.print(updated_tree)
+    # Show what gets removed when excluding 'rich'
+    original = get_python_deps()
+    after_removal = get_python_deps(exclude=["model-envelope"])
+    print(original - after_removal)

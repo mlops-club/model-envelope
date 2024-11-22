@@ -3,14 +3,16 @@ name = "model-envelope"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.8"
 dependencies = [
-    "pip-tools>=7.4.1",
     "pipdeptree>=2.23.4",
-    "rich>=13.9.4",
-    "uv>=0.5.4",
 ]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "rich>=13.9.4",
+]

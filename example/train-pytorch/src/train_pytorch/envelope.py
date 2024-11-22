@@ -1,12 +1,14 @@
 import json
-import os
 import tempfile
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 import mlflow
 import numpy as np
 import torch
 from mlflow.pyfunc import PythonModel, PythonModelContext
+from model_envelope import get_python_deps
+from model_envelope.freeze_deps import write_graph_to_text_file
 
 from train_pytorch.dataset import PriceDataset
 from train_pytorch.model import PricePredictor
@@ -109,31 +111,40 @@ def log_price_predictor(
         # Create a temporary directory for artifacts
         with tempfile.TemporaryDirectory() as tmp_dir:
             # Save model config
-            config_path = os.path.join(tmp_dir, "model_config.json")
+            tmp_dir_path = Path(tmp_dir)
+            config_path = tmp_dir_path / "model_config.json"
             model_config = {
                 "window_size": model.window_size,
             }
-            with open(config_path, "w") as f:
-                json.dump(model_config, f)
+            config_path.write_text(json.dumps(model_config))
 
             # Save model state
-            state_dict_path = os.path.join(tmp_dir, "model_state.pt")
+            state_dict_path = tmp_dir_path / "model_state.pt"
             torch.save(model.state_dict(), state_dict_path)
 
             # Save scaler
-            scaler_path = os.path.join(tmp_dir, "scaler.pt")
+            scaler_path = tmp_dir_path / "scaler.pt"
             torch.save(dataset.scaler, scaler_path)
+
+            full_pip_graph_fpath = tmp_dir_path / "requirements-graph-full.txt"
+            write_graph_to_text_file(full_pip_graph_fpath, exclude_common_libs=False)
+
+            model_pip_graph_fpath = tmp_dir_path / "requirements-graph-model.txt"
+            write_graph_to_text_file(model_pip_graph_fpath, exclude=["model-envelope"])
 
             # Log the model with MLflow
             mlflow.pyfunc.log_model(
                 artifact_path=model_name,
                 python_model=PricePredictorWrapper(model, dataset.scaler),
                 artifacts={
-                    "model_config": config_path,
-                    "model_state": state_dict_path,
-                    "scaler": scaler_path,
+                    "model_config": str(config_path),
+                    "model_state": str(state_dict_path),
+                    "scaler": str(scaler_path),
+                    "full-requirements-graph": str(full_pip_graph_fpath),
+                    "model-requirements-graph": str(model_pip_graph_fpath),
                 },
                 registered_model_name=model_name,
+                pip_requirements=get_python_deps(),
             )
 
         return run.info.run_id
