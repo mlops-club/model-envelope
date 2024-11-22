@@ -37,6 +37,8 @@ COMMON_DEV_LIBS = [
     "fastapi",
     "uvicorn",
     "gunicorn",
+    "requests",
+    "httpx",
     # preprocessing deps that are redundant with serving
     "psycopg",
     "sqlalchemy",
@@ -76,6 +78,9 @@ def get_python_deps(
 ) -> Set[str]:
     """
     Get Python dependencies, optionally excluding specified packages and their dependency subtrees.
+
+    Think of this function as `pip freeze` but with the ability to select packages to exclude, including
+    all their transitive dependencies.
 
     Args:
         exclude: Sequence of package names to exclude

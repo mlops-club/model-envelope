@@ -12,6 +12,14 @@ from model_envelope.freeze_deps import (
     get_current_package_name,
     write_graph_to_text_file,
 )
+from model_envelope.git_meta import (
+    save_git_patch,
+    try_get_git_branch,
+    try_get_git_commit,
+    try_get_git_remote,
+    try_get_git_user,
+    try_get_git_web_url,
+)
 
 from train_pytorch.dataset import PriceDataset
 from train_pytorch.model import PricePredictor
@@ -110,11 +118,12 @@ def log_price_predictor(
     Returns:
         Run ID of the MLflow run
     """
-    with mlflow.start_run() as run:
+    with mlflow.start_run(experiment_id="932959541537324256") as run:
         # Create a temporary directory for artifacts
         with tempfile.TemporaryDirectory() as tmp_dir:
-            # Save model config
             tmp_dir_path = Path(tmp_dir)
+
+            # Save model config
             config_path = tmp_dir_path / "model_config.json"
             model_config = {
                 "window_size": model.window_size,
@@ -129,28 +138,57 @@ def log_price_predictor(
             scaler_path = tmp_dir_path / "scaler.pt"
             torch.save(dataset.scaler, scaler_path)
 
+            # Save dependency graphs
             full_pip_graph_fpath = tmp_dir_path / "requirements-graph-full.txt"
             write_graph_to_text_file(full_pip_graph_fpath, exclude_common_libs=False)
 
             model_pip_graph_fpath = tmp_dir_path / "requirements-graph-model.txt"
             write_graph_to_text_file(model_pip_graph_fpath, exclude=["model-envelope"])
 
-            # Set the current package name as a tag
-            mlflow.set_tag("current-package", get_current_package_name())
-
-            # Log the model with MLflow
-            mlflow.pyfunc.log_model(
-                artifact_path=model_name,
-                python_model=PricePredictorWrapper(model, dataset.scaler),
-                artifacts={
+            # Save git patch if there are uncommitted changes
+            patch_path = tmp_dir_path / "uncommitted_changes.patch"
+            if saved_patch := save_git_patch(patch_path):
+                artifacts = {
                     "model_config": str(config_path),
                     "model_state": str(state_dict_path),
                     "scaler": str(scaler_path),
                     "full-requirements-graph": str(full_pip_graph_fpath),
                     "model-requirements-graph": str(model_pip_graph_fpath),
-                },
+                    "git-patch": str(saved_patch),
+                }
+            else:
+                artifacts = {
+                    "model_config": str(config_path),
+                    "model_state": str(state_dict_path),
+                    "scaler": str(scaler_path),
+                    "full-requirements-graph": str(full_pip_graph_fpath),
+                    "model-requirements-graph": str(model_pip_graph_fpath),
+                }
+
+            # Set git metadata as tags
+            mlflow.set_tag("current-package", get_current_package_name())
+            if commit := try_get_git_commit():
+                mlflow.set_tag("git.commit", commit)
+            if branch := try_get_git_branch():
+                mlflow.set_tag("git.branch", branch)
+            if remote := try_get_git_remote():
+                mlflow.set_tag("git.remote", remote)
+            if user := try_get_git_user():
+                mlflow.set_tag("git.user", user)
+            if web_url := try_get_git_web_url():
+                mlflow.set_tag("git.web_url", web_url)
+            if saved_patch:
+                mlflow.set_tag("git.has_uncommitted_changes", "true")
+
+            # Log the model with MLflow
+            mlflow.pyfunc.log_model(
+                artifact_path=model_name,
+                python_model=PricePredictorWrapper(model, dataset.scaler),
+                artifacts=artifacts,
                 registered_model_name=model_name,
                 pip_requirements=get_python_deps(),
+                # infer_code_paths=True, # TODO; this raised an error
+                code_paths=[str(Path(__file__).parent)],
             )
 
         return run.info.run_id

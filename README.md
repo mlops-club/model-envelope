@@ -15,12 +15,12 @@ make train-pytorch
 
 Track these aspects of each experimental run:
 
-- [ ] Git metadata; capture:
-    - [ ] Git hash
-    - [ ] Git branch
-    - [ ] Remote URL
-    - [ ] Dirty/uncommitted changes (as patch)
-    - [ ] Log an HTML rendered diff of that 
+- [x] Git metadata; capture: (note the solution requires the `git` executable to be available)
+    - [x] Git hash
+    - [x] Git branch
+    - [x] Remote URL
+    - [x] Dirty/uncommitted changes (as patch)
+    - [x] Log an HTML rendered diff of that 
 - Entrypoint
   - [ ] the script: e.g. `uv run src/train_pytorch/train.py`
   - [ ] CLI args, e.g. `--num-epocs 10`
