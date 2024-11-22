@@ -118,7 +118,7 @@ def log_price_predictor(
     Returns:
         Run ID of the MLflow run
     """
-    with mlflow.start_run(experiment_id="932959541537324256") as run:
+    with mlflow.start_run() as run:
         # Create a temporary directory for artifacts
         with tempfile.TemporaryDirectory() as tmp_dir:
             tmp_dir_path = Path(tmp_dir)
