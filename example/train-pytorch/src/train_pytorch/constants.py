@@ -1,7 +1,7 @@
 from pathlib import Path
 
 THIS_DIR = Path(__file__).parent
-DATA_DIR = (THIS_DIR / "../../../data").resolve()
+DATA_DIR = (THIS_DIR / "../../../../data").resolve()
 MODELS_DIR = (THIS_DIR / "../../../models").resolve()
 
 RUNESCAPE_ITEM_PRICES_DATASET_FPATH = DATA_DIR / "Runescape_Item_Prices.csv"

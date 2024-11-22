@@ -1,6 +1,7 @@
 data
-*env*
+*.env
+*.venv
+*venv
 *mlruns*
 *DS_Store*
 *cache*
-*pyc*

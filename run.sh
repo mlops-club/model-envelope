@@ -1,10 +1,6 @@
 #!/bin/bash
 PATH=./node_modules/.bin:$PATH
 
-function install {
-    npm install
-}
-
 function download-data {
     # Check if kaggle.json exists
     if [ ! -f ~/.kaggle/kaggle.json ]; then
@@ -26,26 +22,14 @@ function download-data {
     
     echo "Extracting dataset..."
     cd data && unzip -o runescape-grand-exchange-data.zip && rm runescape-grand-exchange-data.zip
+    mv */*.csv ./
     
     echo "Dataset installed successfully in ./data directory"
 }
 
-function build {
-    webpack
-}
-
-function start {
-    build # Call task dependency
-    python -m SimpleHTTPServer 9000
-}
-
-function test {
-    mocha test/**/*.js
-}
-
-function default {
-    # Default task to execute
-    start
+function train-pytorch {
+    cd example/train-pytorch
+    uv run src/train_pytorch/train.py
 }
 
 function help {

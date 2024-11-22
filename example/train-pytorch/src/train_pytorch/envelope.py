@@ -1,0 +1,139 @@
+import json
+import os
+import tempfile
+from typing import Any, Dict, Optional
+
+import mlflow
+import numpy as np
+import torch
+from mlflow.pyfunc import PythonModel, PythonModelContext
+
+from train_pytorch.dataset import PriceDataset
+from train_pytorch.model import PricePredictor
+
+
+class PricePredictorWrapper(PythonModel):
+    def __init__(
+        self,
+        model: Optional[PricePredictor] = None,
+        scaler: Optional[Any] = None,
+    ):
+        self.model = model
+        self.scaler = scaler
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    def load_context(self, context: PythonModelContext) -> None:
+        """Load the model and scaler from the saved artifacts"""
+        # Load config and state dict
+        config = torch.load(context.artifacts["model_config"])
+        state_dict = torch.load(
+            context.artifacts["model_state"], map_location=self.device
+        )
+        self.scaler = torch.load(context.artifacts["scaler"])
+
+        # Initialize and load model
+        self.model = PricePredictor(**config)
+        self.model.load_state_dict(state_dict)
+        self.model.to(self.device)
+        self.model.eval()
+
+    def predict(
+        self, context: PythonModelContext, data: Dict[str, np.ndarray]
+    ) -> np.ndarray:
+        """Predict using the wrapped model"""
+        return predict_next_day(
+            model=self.model,
+            last_window=data["prices"],
+            scaler=self.scaler,
+            device=self.device,
+        )
+
+
+def predict_next_day(
+    model: PricePredictor,
+    dataset: PriceDataset,
+    last_window: np.ndarray,
+    device: Optional[str] = None,
+) -> float:
+    """
+    Predict the next day's price
+    """
+    if device is None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    model.eval()
+    with torch.no_grad():
+        # Scale the input
+        scaled_window = dataset.scaler.transform(last_window.reshape(-1, 1))
+        X = (
+            torch.FloatTensor(scaled_window).unsqueeze(0).to(device)
+        )  # Add batch dimension
+
+        # Get prediction
+        scaled_pred = model(X)
+
+        # Convert back to original scale
+        prediction = dataset.inverse_transform(scaled_pred.cpu())[0][0]
+
+    return prediction
+
+
+def get_model_config(model: torch.nn.Module) -> Dict[str, Any]:
+    """Extract configuration from a trained model"""
+    return {
+        "window_size": model.window_size if hasattr(model, "window_size") else None,
+        "hidden_size": model.embedding.out_features,
+        "num_heads": model.transformer.layers[0].self_attn.num_heads,
+        "num_layers": len(model.transformer.layers),
+        "dropout": model.transformer.layers[0].dropout.p,
+    }
+
+
+def log_price_predictor(
+    model: PricePredictor,
+    dataset: PriceDataset,
+    model_name: str = "price_predictor",
+) -> str:
+    """
+    Log the price predictor model using MLflow
+
+    Args:
+        model: Trained model to save
+        dataset: Dataset used for training (needed for scaler)
+        model_name: Name for the MLflow model
+
+    Returns:
+        Run ID of the MLflow run
+    """
+    with mlflow.start_run() as run:
+        # Create a temporary directory for artifacts
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            # Save model config
+            config_path = os.path.join(tmp_dir, "model_config.json")
+            model_config = {
+                "window_size": model.window_size,
+            }
+            with open(config_path, "w") as f:
+                json.dump(model_config, f)
+
+            # Save model state
+            state_dict_path = os.path.join(tmp_dir, "model_state.pt")
+            torch.save(model.state_dict(), state_dict_path)
+
+            # Save scaler
+            scaler_path = os.path.join(tmp_dir, "scaler.pt")
+            torch.save(dataset.scaler, scaler_path)
+
+            # Log the model with MLflow
+            mlflow.pyfunc.log_model(
+                artifact_path=model_name,
+                python_model=PricePredictorWrapper(model, dataset.scaler),
+                artifacts={
+                    "model_config": config_path,
+                    "model_state": state_dict_path,
+                    "scaler": scaler_path,
+                },
+                registered_model_name=model_name,
+            )
+
+        return run.info.run_id
