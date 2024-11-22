@@ -1,0 +1,825 @@
+fqdn==1.5.1
+isoduration==20.11.0
+└── arrow==1.3.0
+    ├── python-dateutil==2.9.0.post0
+        └── six==1.16.0
+    └── types-python-dateutil==2.9.0.20241003
+jsonpointer==3.0.0
+jupyterlab==4.3.1
+├── Jinja2==3.1.4
+    └── MarkupSafe==3.0.2
+├── async-lru==2.0.4
+├── httpx==0.27.2
+    ├── anyio==4.6.2.post1
+    │   ├── idna==3.10
+    │   └── sniffio==1.3.1
+    ├── certifi==2024.8.30
+    ├── httpcore==1.0.7
+    │   ├── certifi==2024.8.30
+    │   └── h11==0.14.0
+    ├── idna==3.10
+    └── sniffio==1.3.1
+├── ipykernel==6.29.5
+    ├── appnope==0.1.4
+    ├── comm==0.2.2
+    │   └── traitlets==5.14.3
+    ├── debugpy==1.8.9
+    ├── ipython==8.29.0
+    │   ├── Pygments==2.18.0
+    │   ├── decorator==5.1.1
+    │   ├── jedi==0.19.2
+    │   │   └── parso==0.8.4
+    │   ├── matplotlib-inline==0.1.7
+    │   │   └── traitlets==5.14.3
+    │   ├── pexpect==4.9.0
+    │   │   └── ptyprocess==0.7.0
+    │   ├── prompt_toolkit==3.0.48
+    │   │   └── wcwidth==0.2.13
+    │   ├── stack-data==0.6.3
+    │   │   ├── asttokens==2.4.1
+    │   │   │   └── six==1.16.0
+    │   │   ├── executing==2.1.0
+    │   │   └── pure_eval==0.2.3
+    │   └── traitlets==5.14.3
+    ├── jupyter_client==8.6.3
+    │   ├── jupyter_core==5.7.2
+    │   │   ├── platformdirs==4.3.6
+    │   │   └── traitlets==5.14.3
+    │   ├── python-dateutil==2.9.0.post0
+    │   │   └── six==1.16.0
+    │   ├── pyzmq==26.2.0
+    │   ├── tornado==6.4.2
+    │   └── traitlets==5.14.3
+    ├── jupyter_core==5.7.2
+    │   ├── platformdirs==4.3.6
+    │   └── traitlets==5.14.3
+    ├── matplotlib-inline==0.1.7
+    │   └── traitlets==5.14.3
+    ├── nest-asyncio==1.6.0
+    ├── psutil==6.1.0
+    ├── pyzmq==26.2.0
+    ├── tornado==6.4.2
+    └── traitlets==5.14.3
+├── jupyter-lsp==2.2.5
+    └── jupyter_server==2.14.2
+    │   ├── Jinja2==3.1.4
+    │       └── MarkupSafe==3.0.2
+    │   ├── Send2Trash==1.8.3
+    │   ├── anyio==4.6.2.post1
+    │       ├── idna==3.10
+    │       └── sniffio==1.3.1
+    │   ├── argon2-cffi==23.1.0
+    │       └── argon2-cffi-bindings==21.2.0
+    │       │   └── cffi==1.17.1
+    │       │       └── pycparser==2.22
+    │   ├── jupyter-events==0.10.0
+    │       ├── PyYAML==6.0.2
+    │       ├── jsonschema==4.23.0
+    │       │   ├── attrs==24.2.0
+    │       │   ├── jsonschema-specifications==2024.10.1
+    │       │   │   └── referencing==0.35.1
+    │       │   │   │   ├── attrs==24.2.0
+    │       │   │   │   └── rpds-py==0.21.0
+    │       │   ├── referencing==0.35.1
+    │       │   │   ├── attrs==24.2.0
+    │       │   │   └── rpds-py==0.21.0
+    │       │   └── rpds-py==0.21.0
+    │       ├── python-json-logger==2.0.7
+    │       ├── referencing==0.35.1
+    │       │   ├── attrs==24.2.0
+    │       │   └── rpds-py==0.21.0
+    │       ├── rfc3339-validator==0.1.4
+    │       │   └── six==1.16.0
+    │       ├── rfc3986-validator==0.1.1
+    │       └── traitlets==5.14.3
+    │   ├── jupyter_client==8.6.3
+    │       ├── jupyter_core==5.7.2
+    │       │   ├── platformdirs==4.3.6
+    │       │   └── traitlets==5.14.3
+    │       ├── python-dateutil==2.9.0.post0
+    │       │   └── six==1.16.0
+    │       ├── pyzmq==26.2.0
+    │       ├── tornado==6.4.2
+    │       └── traitlets==5.14.3
+    │   ├── jupyter_core==5.7.2
+    │       ├── platformdirs==4.3.6
+    │       └── traitlets==5.14.3
+    │   ├── jupyter_server_terminals==0.5.3
+    │       └── terminado==0.18.1
+    │       │   ├── ptyprocess==0.7.0
+    │       │   └── tornado==6.4.2
+    │   ├── nbconvert==7.16.4
+    │       ├── Jinja2==3.1.4
+    │       │   └── MarkupSafe==3.0.2
+    │       ├── MarkupSafe==3.0.2
+    │       ├── Pygments==2.18.0
+    │       ├── beautifulsoup4==4.12.3
+    │       │   └── soupsieve==2.6
+    │       ├── bleach==6.2.0
+    │       │   └── webencodings==0.5.1
+    │       ├── defusedxml==0.7.1
+    │       ├── jupyter_core==5.7.2
+    │       │   ├── platformdirs==4.3.6
+    │       │   └── traitlets==5.14.3
+    │       ├── jupyterlab_pygments==0.3.0
+    │       ├── mistune==3.0.2
+    │       ├── nbclient==0.10.0
+    │       │   ├── jupyter_client==8.6.3
+    │       │   │   ├── jupyter_core==5.7.2
+    │       │   │   │   ├── platformdirs==4.3.6
+    │       │   │   │   └── traitlets==5.14.3
+    │       │   │   ├── python-dateutil==2.9.0.post0
+    │       │   │   │   └── six==1.16.0
+    │       │   │   ├── pyzmq==26.2.0
+    │       │   │   ├── tornado==6.4.2
+    │       │   │   └── traitlets==5.14.3
+    │       │   ├── jupyter_core==5.7.2
+    │       │   │   ├── platformdirs==4.3.6
+    │       │   │   └── traitlets==5.14.3
+    │       │   ├── nbformat==5.10.4
+    │       │   │   ├── fastjsonschema==2.20.0
+    │       │   │   ├── jsonschema==4.23.0
+    │       │   │   │   ├── attrs==24.2.0
+    │       │   │   │   ├── jsonschema-specifications==2024.10.1
+    │       │   │   │   │   └── referencing==0.35.1
+    │       │   │   │   │   │   ├── attrs==24.2.0
+    │       │   │   │   │   │   └── rpds-py==0.21.0
+    │       │   │   │   ├── referencing==0.35.1
+    │       │   │   │   │   ├── attrs==24.2.0
+    │       │   │   │   │   └── rpds-py==0.21.0
+    │       │   │   │   └── rpds-py==0.21.0
+    │       │   │   ├── jupyter_core==5.7.2
+    │       │   │   │   ├── platformdirs==4.3.6
+    │       │   │   │   └── traitlets==5.14.3
+    │       │   │   └── traitlets==5.14.3
+    │       │   └── traitlets==5.14.3
+    │       ├── nbformat==5.10.4
+    │       │   ├── fastjsonschema==2.20.0
+    │       │   ├── jsonschema==4.23.0
+    │       │   │   ├── attrs==24.2.0
+    │       │   │   ├── jsonschema-specifications==2024.10.1
+    │       │   │   │   └── referencing==0.35.1
+    │       │   │   │   │   ├── attrs==24.2.0
+    │       │   │   │   │   └── rpds-py==0.21.0
+    │       │   │   ├── referencing==0.35.1
+    │       │   │   │   ├── attrs==24.2.0
+    │       │   │   │   └── rpds-py==0.21.0
+    │       │   │   └── rpds-py==0.21.0
+    │       │   ├── jupyter_core==5.7.2
+    │       │   │   ├── platformdirs==4.3.6
+    │       │   │   └── traitlets==5.14.3
+    │       │   └── traitlets==5.14.3
+    │       ├── pandocfilters==1.5.1
+    │       ├── tinycss2==1.4.0
+    │       │   └── webencodings==0.5.1
+    │       └── traitlets==5.14.3
+    │   ├── nbformat==5.10.4
+    │       ├── fastjsonschema==2.20.0
+    │       ├── jsonschema==4.23.0
+    │       │   ├── attrs==24.2.0
+    │       │   ├── jsonschema-specifications==2024.10.1
+    │       │   │   └── referencing==0.35.1
+    │       │   │   │   ├── attrs==24.2.0
+    │       │   │   │   └── rpds-py==0.21.0
+    │       │   ├── referencing==0.35.1
+    │       │   │   ├── attrs==24.2.0
+    │       │   │   └── rpds-py==0.21.0
+    │       │   └── rpds-py==0.21.0
+    │       ├── jupyter_core==5.7.2
+    │       │   ├── platformdirs==4.3.6
+    │       │   └── traitlets==5.14.3
+    │       └── traitlets==5.14.3
+    │   ├── overrides==7.7.0
+    │   ├── prometheus_client==0.21.0
+    │   ├── pyzmq==26.2.0
+    │   ├── terminado==0.18.1
+    │       ├── ptyprocess==0.7.0
+    │       └── tornado==6.4.2
+    │   ├── tornado==6.4.2
+    │   ├── traitlets==5.14.3
+    │   └── websocket-client==1.8.0
+├── jupyter_core==5.7.2
+    ├── platformdirs==4.3.6
+    └── traitlets==5.14.3
+├── jupyter_server==2.14.2
+    ├── Jinja2==3.1.4
+    │   └── MarkupSafe==3.0.2
+    ├── Send2Trash==1.8.3
+    ├── anyio==4.6.2.post1
+    │   ├── idna==3.10
+    │   └── sniffio==1.3.1
+    ├── argon2-cffi==23.1.0
+    │   └── argon2-cffi-bindings==21.2.0
+    │   │   └── cffi==1.17.1
+    │   │       └── pycparser==2.22
+    ├── jupyter-events==0.10.0
+    │   ├── PyYAML==6.0.2
+    │   ├── jsonschema==4.23.0
+    │   │   ├── attrs==24.2.0
+    │   │   ├── jsonschema-specifications==2024.10.1
+    │   │   │   └── referencing==0.35.1
+    │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   └── rpds-py==0.21.0
+    │   │   ├── referencing==0.35.1
+    │   │   │   ├── attrs==24.2.0
+    │   │   │   └── rpds-py==0.21.0
+    │   │   └── rpds-py==0.21.0
+    │   ├── python-json-logger==2.0.7
+    │   ├── referencing==0.35.1
+    │   │   ├── attrs==24.2.0
+    │   │   └── rpds-py==0.21.0
+    │   ├── rfc3339-validator==0.1.4
+    │   │   └── six==1.16.0
+    │   ├── rfc3986-validator==0.1.1
+    │   └── traitlets==5.14.3
+    ├── jupyter_client==8.6.3
+    │   ├── jupyter_core==5.7.2
+    │   │   ├── platformdirs==4.3.6
+    │   │   └── traitlets==5.14.3
+    │   ├── python-dateutil==2.9.0.post0
+    │   │   └── six==1.16.0
+    │   ├── pyzmq==26.2.0
+    │   ├── tornado==6.4.2
+    │   └── traitlets==5.14.3
+    ├── jupyter_core==5.7.2
+    │   ├── platformdirs==4.3.6
+    │   └── traitlets==5.14.3
+    ├── jupyter_server_terminals==0.5.3
+    │   └── terminado==0.18.1
+    │   │   ├── ptyprocess==0.7.0
+    │   │   └── tornado==6.4.2
+    ├── nbconvert==7.16.4
+    │   ├── Jinja2==3.1.4
+    │   │   └── MarkupSafe==3.0.2
+    │   ├── MarkupSafe==3.0.2
+    │   ├── Pygments==2.18.0
+    │   ├── beautifulsoup4==4.12.3
+    │   │   └── soupsieve==2.6
+    │   ├── bleach==6.2.0
+    │   │   └── webencodings==0.5.1
+    │   ├── defusedxml==0.7.1
+    │   ├── jupyter_core==5.7.2
+    │   │   ├── platformdirs==4.3.6
+    │   │   └── traitlets==5.14.3
+    │   ├── jupyterlab_pygments==0.3.0
+    │   ├── mistune==3.0.2
+    │   ├── nbclient==0.10.0
+    │   │   ├── jupyter_client==8.6.3
+    │   │   │   ├── jupyter_core==5.7.2
+    │   │   │   │   ├── platformdirs==4.3.6
+    │   │   │   │   └── traitlets==5.14.3
+    │   │   │   ├── python-dateutil==2.9.0.post0
+    │   │   │   │   └── six==1.16.0
+    │   │   │   ├── pyzmq==26.2.0
+    │   │   │   ├── tornado==6.4.2
+    │   │   │   └── traitlets==5.14.3
+    │   │   ├── jupyter_core==5.7.2
+    │   │   │   ├── platformdirs==4.3.6
+    │   │   │   └── traitlets==5.14.3
+    │   │   ├── nbformat==5.10.4
+    │   │   │   ├── fastjsonschema==2.20.0
+    │   │   │   ├── jsonschema==4.23.0
+    │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   ├── jsonschema-specifications==2024.10.1
+    │   │   │   │   │   └── referencing==0.35.1
+    │   │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   │   ├── referencing==0.35.1
+    │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   ├── jupyter_core==5.7.2
+    │   │   │   │   ├── platformdirs==4.3.6
+    │   │   │   │   └── traitlets==5.14.3
+    │   │   │   └── traitlets==5.14.3
+    │   │   └── traitlets==5.14.3
+    │   ├── nbformat==5.10.4
+    │   │   ├── fastjsonschema==2.20.0
+    │   │   ├── jsonschema==4.23.0
+    │   │   │   ├── attrs==24.2.0
+    │   │   │   ├── jsonschema-specifications==2024.10.1
+    │   │   │   │   └── referencing==0.35.1
+    │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   ├── referencing==0.35.1
+    │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   └── rpds-py==0.21.0
+    │   │   ├── jupyter_core==5.7.2
+    │   │   │   ├── platformdirs==4.3.6
+    │   │   │   └── traitlets==5.14.3
+    │   │   └── traitlets==5.14.3
+    │   ├── pandocfilters==1.5.1
+    │   ├── tinycss2==1.4.0
+    │   │   └── webencodings==0.5.1
+    │   └── traitlets==5.14.3
+    ├── nbformat==5.10.4
+    │   ├── fastjsonschema==2.20.0
+    │   ├── jsonschema==4.23.0
+    │   │   ├── attrs==24.2.0
+    │   │   ├── jsonschema-specifications==2024.10.1
+    │   │   │   └── referencing==0.35.1
+    │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   └── rpds-py==0.21.0
+    │   │   ├── referencing==0.35.1
+    │   │   │   ├── attrs==24.2.0
+    │   │   │   └── rpds-py==0.21.0
+    │   │   └── rpds-py==0.21.0
+    │   ├── jupyter_core==5.7.2
+    │   │   ├── platformdirs==4.3.6
+    │   │   └── traitlets==5.14.3
+    │   └── traitlets==5.14.3
+    ├── overrides==7.7.0
+    ├── prometheus_client==0.21.0
+    ├── pyzmq==26.2.0
+    ├── terminado==0.18.1
+    │   ├── ptyprocess==0.7.0
+    │   └── tornado==6.4.2
+    ├── tornado==6.4.2
+    ├── traitlets==5.14.3
+    └── websocket-client==1.8.0
+├── jupyterlab_server==2.27.3
+    ├── Jinja2==3.1.4
+    │   └── MarkupSafe==3.0.2
+    ├── babel==2.16.0
+    ├── json5==0.9.28
+    ├── jsonschema==4.23.0
+    │   ├── attrs==24.2.0
+    │   ├── jsonschema-specifications==2024.10.1
+    │   │   └── referencing==0.35.1
+    │   │   │   ├── attrs==24.2.0
+    │   │   │   └── rpds-py==0.21.0
+    │   ├── referencing==0.35.1
+    │   │   ├── attrs==24.2.0
+    │   │   └── rpds-py==0.21.0
+    │   └── rpds-py==0.21.0
+    ├── jupyter_server==2.14.2
+    │   ├── Jinja2==3.1.4
+    │   │   └── MarkupSafe==3.0.2
+    │   ├── Send2Trash==1.8.3
+    │   ├── anyio==4.6.2.post1
+    │   │   ├── idna==3.10
+    │   │   └── sniffio==1.3.1
+    │   ├── argon2-cffi==23.1.0
+    │   │   └── argon2-cffi-bindings==21.2.0
+    │   │   │   └── cffi==1.17.1
+    │   │   │       └── pycparser==2.22
+    │   ├── jupyter-events==0.10.0
+    │   │   ├── PyYAML==6.0.2
+    │   │   ├── jsonschema==4.23.0
+    │   │   │   ├── attrs==24.2.0
+    │   │   │   ├── jsonschema-specifications==2024.10.1
+    │   │   │   │   └── referencing==0.35.1
+    │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   ├── referencing==0.35.1
+    │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   └── rpds-py==0.21.0
+    │   │   ├── python-json-logger==2.0.7
+    │   │   ├── referencing==0.35.1
+    │   │   │   ├── attrs==24.2.0
+    │   │   │   └── rpds-py==0.21.0
+    │   │   ├── rfc3339-validator==0.1.4
+    │   │   │   └── six==1.16.0
+    │   │   ├── rfc3986-validator==0.1.1
+    │   │   └── traitlets==5.14.3
+    │   ├── jupyter_client==8.6.3
+    │   │   ├── jupyter_core==5.7.2
+    │   │   │   ├── platformdirs==4.3.6
+    │   │   │   └── traitlets==5.14.3
+    │   │   ├── python-dateutil==2.9.0.post0
+    │   │   │   └── six==1.16.0
+    │   │   ├── pyzmq==26.2.0
+    │   │   ├── tornado==6.4.2
+    │   │   └── traitlets==5.14.3
+    │   ├── jupyter_core==5.7.2
+    │   │   ├── platformdirs==4.3.6
+    │   │   └── traitlets==5.14.3
+    │   ├── jupyter_server_terminals==0.5.3
+    │   │   └── terminado==0.18.1
+    │   │   │   ├── ptyprocess==0.7.0
+    │   │   │   └── tornado==6.4.2
+    │   ├── nbconvert==7.16.4
+    │   │   ├── Jinja2==3.1.4
+    │   │   │   └── MarkupSafe==3.0.2
+    │   │   ├── MarkupSafe==3.0.2
+    │   │   ├── Pygments==2.18.0
+    │   │   ├── beautifulsoup4==4.12.3
+    │   │   │   └── soupsieve==2.6
+    │   │   ├── bleach==6.2.0
+    │   │   │   └── webencodings==0.5.1
+    │   │   ├── defusedxml==0.7.1
+    │   │   ├── jupyter_core==5.7.2
+    │   │   │   ├── platformdirs==4.3.6
+    │   │   │   └── traitlets==5.14.3
+    │   │   ├── jupyterlab_pygments==0.3.0
+    │   │   ├── mistune==3.0.2
+    │   │   ├── nbclient==0.10.0
+    │   │   │   ├── jupyter_client==8.6.3
+    │   │   │   │   ├── jupyter_core==5.7.2
+    │   │   │   │   │   ├── platformdirs==4.3.6
+    │   │   │   │   │   └── traitlets==5.14.3
+    │   │   │   │   ├── python-dateutil==2.9.0.post0
+    │   │   │   │   │   └── six==1.16.0
+    │   │   │   │   ├── pyzmq==26.2.0
+    │   │   │   │   ├── tornado==6.4.2
+    │   │   │   │   └── traitlets==5.14.3
+    │   │   │   ├── jupyter_core==5.7.2
+    │   │   │   │   ├── platformdirs==4.3.6
+    │   │   │   │   └── traitlets==5.14.3
+    │   │   │   ├── nbformat==5.10.4
+    │   │   │   │   ├── fastjsonschema==2.20.0
+    │   │   │   │   ├── jsonschema==4.23.0
+    │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   ├── jsonschema-specifications==2024.10.1
+    │   │   │   │   │   │   └── referencing==0.35.1
+    │   │   │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   │   │   ├── referencing==0.35.1
+    │   │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   │   ├── jupyter_core==5.7.2
+    │   │   │   │   │   ├── platformdirs==4.3.6
+    │   │   │   │   │   └── traitlets==5.14.3
+    │   │   │   │   └── traitlets==5.14.3
+    │   │   │   └── traitlets==5.14.3
+    │   │   ├── nbformat==5.10.4
+    │   │   │   ├── fastjsonschema==2.20.0
+    │   │   │   ├── jsonschema==4.23.0
+    │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   ├── jsonschema-specifications==2024.10.1
+    │   │   │   │   │   └── referencing==0.35.1
+    │   │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   │   ├── referencing==0.35.1
+    │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   ├── jupyter_core==5.7.2
+    │   │   │   │   ├── platformdirs==4.3.6
+    │   │   │   │   └── traitlets==5.14.3
+    │   │   │   └── traitlets==5.14.3
+    │   │   ├── pandocfilters==1.5.1
+    │   │   ├── tinycss2==1.4.0
+    │   │   │   └── webencodings==0.5.1
+    │   │   └── traitlets==5.14.3
+    │   ├── nbformat==5.10.4
+    │   │   ├── fastjsonschema==2.20.0
+    │   │   ├── jsonschema==4.23.0
+    │   │   │   ├── attrs==24.2.0
+    │   │   │   ├── jsonschema-specifications==2024.10.1
+    │   │   │   │   └── referencing==0.35.1
+    │   │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   ├── referencing==0.35.1
+    │   │   │   │   ├── attrs==24.2.0
+    │   │   │   │   └── rpds-py==0.21.0
+    │   │   │   └── rpds-py==0.21.0
+    │   │   ├── jupyter_core==5.7.2
+    │   │   │   ├── platformdirs==4.3.6
+    │   │   │   └── traitlets==5.14.3
+    │   │   └── traitlets==5.14.3
+    │   ├── overrides==7.7.0
+    │   ├── prometheus_client==0.21.0
+    │   ├── pyzmq==26.2.0
+    │   ├── terminado==0.18.1
+    │   │   ├── ptyprocess==0.7.0
+    │   │   └── tornado==6.4.2
+    │   ├── tornado==6.4.2
+    │   ├── traitlets==5.14.3
+    │   └── websocket-client==1.8.0
+    └── requests==2.32.3
+    │   ├── certifi==2024.8.30
+    │   ├── charset-normalizer==3.4.0
+    │   ├── idna==3.10
+    │   └── urllib3==2.2.3
+├── notebook_shim==0.2.4
+    └── jupyter_server==2.14.2
+    │   ├── Jinja2==3.1.4
+    │       └── MarkupSafe==3.0.2
+    │   ├── Send2Trash==1.8.3
+    │   ├── anyio==4.6.2.post1
+    │       ├── idna==3.10
+    │       └── sniffio==1.3.1
+    │   ├── argon2-cffi==23.1.0
+    │       └── argon2-cffi-bindings==21.2.0
+    │       │   └── cffi==1.17.1
+    │       │       └── pycparser==2.22
+    │   ├── jupyter-events==0.10.0
+    │       ├── PyYAML==6.0.2
+    │       ├── jsonschema==4.23.0
+    │       │   ├── attrs==24.2.0
+    │       │   ├── jsonschema-specifications==2024.10.1
+    │       │   │   └── referencing==0.35.1
+    │       │   │   │   ├── attrs==24.2.0
+    │       │   │   │   └── rpds-py==0.21.0
+    │       │   ├── referencing==0.35.1
+    │       │   │   ├── attrs==24.2.0
+    │       │   │   └── rpds-py==0.21.0
+    │       │   └── rpds-py==0.21.0
+    │       ├── python-json-logger==2.0.7
+    │       ├── referencing==0.35.1
+    │       │   ├── attrs==24.2.0
+    │       │   └── rpds-py==0.21.0
+    │       ├── rfc3339-validator==0.1.4
+    │       │   └── six==1.16.0
+    │       ├── rfc3986-validator==0.1.1
+    │       └── traitlets==5.14.3
+    │   ├── jupyter_client==8.6.3
+    │       ├── jupyter_core==5.7.2
+    │       │   ├── platformdirs==4.3.6
+    │       │   └── traitlets==5.14.3
+    │       ├── python-dateutil==2.9.0.post0
+    │       │   └── six==1.16.0
+    │       ├── pyzmq==26.2.0
+    │       ├── tornado==6.4.2
+    │       └── traitlets==5.14.3
+    │   ├── jupyter_core==5.7.2
+    │       ├── platformdirs==4.3.6
+    │       └── traitlets==5.14.3
+    │   ├── jupyter_server_terminals==0.5.3
+    │       └── terminado==0.18.1
+    │       │   ├── ptyprocess==0.7.0
+    │       │   └── tornado==6.4.2
+    │   ├── nbconvert==7.16.4
+    │       ├── Jinja2==3.1.4
+    │       │   └── MarkupSafe==3.0.2
+    │       ├── MarkupSafe==3.0.2
+    │       ├── Pygments==2.18.0
+    │       ├── beautifulsoup4==4.12.3
+    │       │   └── soupsieve==2.6
+    │       ├── bleach==6.2.0
+    │       │   └── webencodings==0.5.1
+    │       ├── defusedxml==0.7.1
+    │       ├── jupyter_core==5.7.2
+    │       │   ├── platformdirs==4.3.6
+    │       │   └── traitlets==5.14.3
+    │       ├── jupyterlab_pygments==0.3.0
+    │       ├── mistune==3.0.2
+    │       ├── nbclient==0.10.0
+    │       │   ├── jupyter_client==8.6.3
+    │       │   │   ├── jupyter_core==5.7.2
+    │       │   │   │   ├── platformdirs==4.3.6
+    │       │   │   │   └── traitlets==5.14.3
+    │       │   │   ├── python-dateutil==2.9.0.post0
+    │       │   │   │   └── six==1.16.0
+    │       │   │   ├── pyzmq==26.2.0
+    │       │   │   ├── tornado==6.4.2
+    │       │   │   └── traitlets==5.14.3
+    │       │   ├── jupyter_core==5.7.2
+    │       │   │   ├── platformdirs==4.3.6
+    │       │   │   └── traitlets==5.14.3
+    │       │   ├── nbformat==5.10.4
+    │       │   │   ├── fastjsonschema==2.20.0
+    │       │   │   ├── jsonschema==4.23.0
+    │       │   │   │   ├── attrs==24.2.0
+    │       │   │   │   ├── jsonschema-specifications==2024.10.1
+    │       │   │   │   │   └── referencing==0.35.1
+    │       │   │   │   │   │   ├── attrs==24.2.0
+    │       │   │   │   │   │   └── rpds-py==0.21.0
+    │       │   │   │   ├── referencing==0.35.1
+    │       │   │   │   │   ├── attrs==24.2.0
+    │       │   │   │   │   └── rpds-py==0.21.0
+    │       │   │   │   └── rpds-py==0.21.0
+    │       │   │   ├── jupyter_core==5.7.2
+    │       │   │   │   ├── platformdirs==4.3.6
+    │       │   │   │   └── traitlets==5.14.3
+    │       │   │   └── traitlets==5.14.3
+    │       │   └── traitlets==5.14.3
+    │       ├── nbformat==5.10.4
+    │       │   ├── fastjsonschema==2.20.0
+    │       │   ├── jsonschema==4.23.0
+    │       │   │   ├── attrs==24.2.0
+    │       │   │   ├── jsonschema-specifications==2024.10.1
+    │       │   │   │   └── referencing==0.35.1
+    │       │   │   │   │   ├── attrs==24.2.0
+    │       │   │   │   │   └── rpds-py==0.21.0
+    │       │   │   ├── referencing==0.35.1
+    │       │   │   │   ├── attrs==24.2.0
+    │       │   │   │   └── rpds-py==0.21.0
+    │       │   │   └── rpds-py==0.21.0
+    │       │   ├── jupyter_core==5.7.2
+    │       │   │   ├── platformdirs==4.3.6
+    │       │   │   └── traitlets==5.14.3
+    │       │   └── traitlets==5.14.3
+    │       ├── pandocfilters==1.5.1
+    │       ├── tinycss2==1.4.0
+    │       │   └── webencodings==0.5.1
+    │       └── traitlets==5.14.3
+    │   ├── nbformat==5.10.4
+    │       ├── fastjsonschema==2.20.0
+    │       ├── jsonschema==4.23.0
+    │       │   ├── attrs==24.2.0
+    │       │   ├── jsonschema-specifications==2024.10.1
+    │       │   │   └── referencing==0.35.1
+    │       │   │   │   ├── attrs==24.2.0
+    │       │   │   │   └── rpds-py==0.21.0
+    │       │   ├── referencing==0.35.1
+    │       │   │   ├── attrs==24.2.0
+    │       │   │   └── rpds-py==0.21.0
+    │       │   └── rpds-py==0.21.0
+    │       ├── jupyter_core==5.7.2
+    │       │   ├── platformdirs==4.3.6
+    │       │   └── traitlets==5.14.3
+    │       └── traitlets==5.14.3
+    │   ├── overrides==7.7.0
+    │   ├── prometheus_client==0.21.0
+    │   ├── pyzmq==26.2.0
+    │   ├── terminado==0.18.1
+    │       ├── ptyprocess==0.7.0
+    │       └── tornado==6.4.2
+    │   ├── tornado==6.4.2
+    │   ├── traitlets==5.14.3
+    │   └── websocket-client==1.8.0
+├── setuptools==75.6.0
+├── tornado==6.4.2
+└── traitlets==5.14.3
+mlflow==2.18.0
+├── Flask==3.1.0
+    ├── Jinja2==3.1.4
+    │   └── MarkupSafe==3.0.2
+    ├── Werkzeug==3.1.3
+    │   └── MarkupSafe==3.0.2
+    ├── blinker==1.9.0
+    ├── click==8.1.7
+    └── itsdangerous==2.2.0
+├── Jinja2==3.1.4
+    └── MarkupSafe==3.0.2
+├── Markdown==3.7
+├── SQLAlchemy==2.0.36
+    └── typing_extensions==4.12.2
+├── alembic==1.14.0
+    ├── Mako==1.3.6
+    │   └── MarkupSafe==3.0.2
+    ├── SQLAlchemy==2.0.36
+    │   └── typing_extensions==4.12.2
+    └── typing_extensions==4.12.2
+├── docker==7.1.0
+    ├── requests==2.32.3
+    │   ├── certifi==2024.8.30
+    │   ├── charset-normalizer==3.4.0
+    │   ├── idna==3.10
+    │   └── urllib3==2.2.3
+    └── urllib3==2.2.3
+├── graphene==3.4.3
+    ├── graphql-core==3.2.5
+    ├── graphql-relay==3.2.0
+    │   └── graphql-core==3.2.5
+    ├── python-dateutil==2.9.0.post0
+    │   └── six==1.16.0
+    └── typing_extensions==4.12.2
+├── gunicorn==23.0.0
+├── matplotlib==3.9.2
+    ├── contourpy==1.3.1
+    │   └── numpy==2.1.3
+    ├── cycler==0.12.1
+    ├── fonttools==4.55.0
+    ├── kiwisolver==1.4.7
+    ├── numpy==2.1.3
+    ├── pillow==11.0.0
+    ├── pyparsing==3.2.0
+    └── python-dateutil==2.9.0.post0
+    │   └── six==1.16.0
+├── mlflow-skinny==2.18.0
+    ├── GitPython==3.1.43
+    │   └── gitdb==4.0.11
+    │   │   └── smmap==5.0.1
+    ├── PyYAML==6.0.2
+    ├── cachetools==5.5.0
+    ├── click==8.1.7
+    ├── cloudpickle==3.1.0
+    ├── databricks-sdk==0.38.0
+    │   ├── google-auth==2.36.0
+    │   │   ├── cachetools==5.5.0
+    │   │   ├── pyasn1_modules==0.4.1
+    │   │   │   └── pyasn1==0.6.1
+    │   │   └── rsa==4.9
+    │   │   │   └── pyasn1==0.6.1
+    │   └── requests==2.32.3
+    │   │   ├── certifi==2024.8.30
+    │   │   ├── charset-normalizer==3.4.0
+    │   │   ├── idna==3.10
+    │   │   └── urllib3==2.2.3
+    ├── importlib_metadata==8.5.0
+    │   └── zipp==3.21.0
+    ├── opentelemetry-api==1.28.2
+    │   ├── Deprecated==1.2.15
+    │   │   └── wrapt==1.17.0
+    │   └── importlib_metadata==8.5.0
+    │   │   └── zipp==3.21.0
+    ├── opentelemetry-sdk==1.28.2
+    │   ├── opentelemetry-api==1.28.2
+    │   │   ├── Deprecated==1.2.15
+    │   │   │   └── wrapt==1.17.0
+    │   │   └── importlib_metadata==8.5.0
+    │   │   │   └── zipp==3.21.0
+    │   ├── opentelemetry-semantic-conventions==0.49b2
+    │   │   ├── Deprecated==1.2.15
+    │   │   │   └── wrapt==1.17.0
+    │   │   └── opentelemetry-api==1.28.2
+    │   │   │   ├── Deprecated==1.2.15
+    │   │   │       └── wrapt==1.17.0
+    │   │   │   └── importlib_metadata==8.5.0
+    │   │   │       └── zipp==3.21.0
+    │   └── typing_extensions==4.12.2
+    ├── protobuf==5.28.3
+    ├── requests==2.32.3
+    │   ├── certifi==2024.8.30
+    │   ├── charset-normalizer==3.4.0
+    │   ├── idna==3.10
+    │   └── urllib3==2.2.3
+    └── sqlparse==0.5.2
+├── numpy==2.1.3
+├── pandas==2.2.3
+    ├── numpy==2.1.3
+    ├── python-dateutil==2.9.0.post0
+    │   └── six==1.16.0
+    ├── pytz==2024.2
+    └── tzdata==2024.2
+├── pyarrow==18.0.0
+├── scikit-learn==1.5.2
+    ├── joblib==1.4.2
+    ├── numpy==2.1.3
+    ├── scipy==1.14.1
+    │   └── numpy==2.1.3
+    └── threadpoolctl==3.5.0
+└── scipy==1.14.1
+    └── numpy==2.1.3
+train-pytorch==0.1.0
+├── mlflow-skinny==2.18.0
+    ├── GitPython==3.1.43
+    │   └── gitdb==4.0.11
+    │   │   └── smmap==5.0.1
+    ├── PyYAML==6.0.2
+    ├── cachetools==5.5.0
+    ├── click==8.1.7
+    ├── cloudpickle==3.1.0
+    ├── databricks-sdk==0.38.0
+    │   ├── google-auth==2.36.0
+    │   │   ├── cachetools==5.5.0
+    │   │   ├── pyasn1_modules==0.4.1
+    │   │   │   └── pyasn1==0.6.1
+    │   │   └── rsa==4.9
+    │   │   │   └── pyasn1==0.6.1
+    │   └── requests==2.32.3
+    │   │   ├── certifi==2024.8.30
+    │   │   ├── charset-normalizer==3.4.0
+    │   │   ├── idna==3.10
+    │   │   └── urllib3==2.2.3
+    ├── importlib_metadata==8.5.0
+    │   └── zipp==3.21.0
+    ├── opentelemetry-api==1.28.2
+    │   ├── Deprecated==1.2.15
+    │   │   └── wrapt==1.17.0
+    │   └── importlib_metadata==8.5.0
+    │   │   └── zipp==3.21.0
+    ├── opentelemetry-sdk==1.28.2
+    │   ├── opentelemetry-api==1.28.2
+    │   │   ├── Deprecated==1.2.15
+    │   │   │   └── wrapt==1.17.0
+    │   │   └── importlib_metadata==8.5.0
+    │   │   │   └── zipp==3.21.0
+    │   ├── opentelemetry-semantic-conventions==0.49b2
+    │   │   ├── Deprecated==1.2.15
+    │   │   │   └── wrapt==1.17.0
+    │   │   └── opentelemetry-api==1.28.2
+    │   │   │   ├── Deprecated==1.2.15
+    │   │   │       └── wrapt==1.17.0
+    │   │   │   └── importlib_metadata==8.5.0
+    │   │   │       └── zipp==3.21.0
+    │   └── typing_extensions==4.12.2
+    ├── protobuf==5.28.3
+    ├── requests==2.32.3
+    │   ├── certifi==2024.8.30
+    │   ├── charset-normalizer==3.4.0
+    │   ├── idna==3.10
+    │   └── urllib3==2.2.3
+    └── sqlparse==0.5.2
+├── numpy==2.1.3
+├── pandas==2.2.3
+    ├── numpy==2.1.3
+    ├── python-dateutil==2.9.0.post0
+    │   └── six==1.16.0
+    ├── pytz==2024.2
+    └── tzdata==2024.2
+├── polars==1.14.0
+├── scikit-learn==1.5.2
+    ├── joblib==1.4.2
+    ├── numpy==2.1.3
+    ├── scipy==1.14.1
+    │   └── numpy==2.1.3
+    └── threadpoolctl==3.5.0
+└── torch==2.5.1
+    ├── Jinja2==3.1.4
+        └── MarkupSafe==3.0.2
+    ├── filelock==3.16.1
+    ├── fsspec==2024.10.0
+    ├── networkx==3.4.2
+    ├── setuptools==75.6.0
+    ├── sympy==1.13.1
+        └── mpmath==1.3.0
+    └── typing_extensions==4.12.2
+uri-template==1.3.0
+webcolors==24.11.1

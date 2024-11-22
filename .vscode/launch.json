@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Train PyTorch Model",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/example/train-pytorch/src/train_pytorch/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "python": "${workspaceFolder}/example/train-pytorch/.venv/bin/python",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/example/train-pytorch/src:${workspaceFolder}/model-envelope/src"
+            },
+            "cwd": "${workspaceFolder}/example/train-pytorch"
+        },
+        {
+            "name": "Current Python File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "python": "${fileDirname}/../../.venv/bin/python",
+            "env": {
+                "PYTHONPATH": "${fileDirname}/../..:${workspaceFolder}/model-envelope/src"
+            },
+            "cwd": "${fileDirname}/../.."
+        }
+    ]
+}

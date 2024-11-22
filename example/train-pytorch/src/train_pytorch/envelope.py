@@ -8,7 +8,10 @@ import numpy as np
 import torch
 from mlflow.pyfunc import PythonModel, PythonModelContext
 from model_envelope import get_python_deps
-from model_envelope.freeze_deps import write_graph_to_text_file
+from model_envelope.freeze_deps import (
+    get_current_package_name,
+    write_graph_to_text_file,
+)
 
 from train_pytorch.dataset import PriceDataset
 from train_pytorch.model import PricePredictor
@@ -131,6 +134,9 @@ def log_price_predictor(
 
             model_pip_graph_fpath = tmp_dir_path / "requirements-graph-model.txt"
             write_graph_to_text_file(model_pip_graph_fpath, exclude=["model-envelope"])
+
+            # Set the current package name as a tag
+            mlflow.set_tag("current-package", get_current_package_name())
 
             # Log the model with MLflow
             mlflow.pyfunc.log_model(

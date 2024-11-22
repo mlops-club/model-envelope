@@ -1204,7 +1204,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "pipdeptree", specifier = ">=2.23.4" }]
+requires-dist = [{ name = "pipdeptree", specifier = "==2.23.4" }]
 
 [package.metadata.requires-dev]
 dev = [{ name = "rich", specifier = ">=13.9.4" }]
