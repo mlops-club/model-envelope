@@ -14,5 +14,9 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "pytest>=8.3.3",
     "rich>=13.9.4",
 ]
+
+[tool.uv.workspace]
+members = ["tests/artifacts/basic"]

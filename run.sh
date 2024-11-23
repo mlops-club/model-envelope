@@ -32,6 +32,15 @@ function train-pytorch {
     uv run src/train_pytorch/train.py
 }
 
+function test() {
+    # Run pytest with coverage
+    PYTHONPATH=model-envelope/src pytest \
+        model-envelope/tests \
+        --cov=model_envelope \
+        --cov-report=term-missing \
+        -v
+}
+
 function help {
     echo "$0 <task> <args>"
     echo "Tasks:"
