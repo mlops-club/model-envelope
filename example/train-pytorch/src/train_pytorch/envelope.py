@@ -186,7 +186,9 @@ def log_price_predictor(
                 python_model=PricePredictorWrapper(model, dataset.scaler),
                 artifacts=artifacts,
                 registered_model_name=model_name,
-                pip_requirements=get_python_deps(),
+                pip_requirements=get_python_deps(
+                    exclude_current_package_but_include_its_deps=False
+                ),
                 # infer_code_paths=True, # TODO; this raised an error
                 code_paths=[str(Path(__file__).parent)],
             )

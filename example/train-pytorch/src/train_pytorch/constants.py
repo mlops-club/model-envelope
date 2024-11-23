@@ -1,8 +1,13 @@
+import os
 from pathlib import Path
 
 THIS_DIR = Path(__file__).parent
 DATA_DIR = (THIS_DIR / "../../../../data").resolve()
 MODELS_DIR = (THIS_DIR / "../../../models").resolve()
+MLRUNS_DIR = (THIS_DIR / "../../../mlruns").resolve()
+
+# Set MLflow tracking URI
+os.environ["MLFLOW_TRACKING_URI"] = f"file://{MLRUNS_DIR}"
 
 RUNESCAPE_ITEM_PRICES_DATASET_FPATH = DATA_DIR / "Runescape_Item_Prices.csv"
 RUNESCAPE_ITEM_NAMES_DATASET_FPATH = DATA_DIR / "Runescape_Item_Names.csv"
