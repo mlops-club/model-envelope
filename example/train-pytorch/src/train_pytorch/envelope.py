@@ -7,7 +7,6 @@ import mlflow
 import numpy as np
 import torch
 from mlflow.pyfunc import PythonModel, PythonModelContext
-from model_envelope import get_python_deps
 from model_envelope.freeze_deps import (
     get_current_package_name,
     write_graph_to_text_file,
@@ -51,21 +50,48 @@ class PricePredictorWrapper(PythonModel):
         self.model.eval()
 
     def predict(
-        self, context: PythonModelContext, data: Dict[str, np.ndarray]
+        self, context: PythonModelContext, model_input: np.ndarray
     ) -> np.ndarray:
-        """Predict using the wrapped model"""
-        return predict_next_day(
-            model=self.model,
-            last_window=data["prices"],
-            scaler=self.scaler,
-            device=self.device,
-        )
+        """
+        Predict using the wrapped model.
+
+        Args:
+            context: MLflow model context
+            model_input: Array of shape (batch_size, window_size) containing price sequences
+
+        Returns:
+            Array of shape (batch_size,) containing predicted prices
+        """
+        self.model.eval()
+        with torch.no_grad():
+            # Scale the input
+            scaled_input = self.scaler.transform(model_input.reshape(-1, 1)).reshape(
+                model_input.shape[0], -1
+            )
+            X = torch.FloatTensor(scaled_input).to(self.device)
+
+            # Get prediction
+            scaled_pred = self.model(X)
+
+            # Convert back to original scale
+            predictions = self.scaler.inverse_transform(scaled_pred.cpu())
+
+            return predictions.reshape(-1)
+
+
+def get_model_config(model: torch.nn.Module) -> Dict[str, Any]:
+    return predict_next_day(
+        model=self.model,
+        last_window=model_input,
+        scaler=self.scaler,
+        device=self.device,
+    )
 
 
 def predict_next_day(
     model: PricePredictor,
-    dataset: PriceDataset,
     last_window: np.ndarray,
+    scaler: Any,
     device: Optional[str] = None,
 ) -> float:
     """
@@ -77,7 +103,7 @@ def predict_next_day(
     model.eval()
     with torch.no_grad():
         # Scale the input
-        scaled_window = dataset.scaler.transform(last_window.reshape(-1, 1))
+        scaled_window = scaler.transform(last_window.reshape(-1, 1))
         X = (
             torch.FloatTensor(scaled_window).unsqueeze(0).to(device)
         )  # Add batch dimension
@@ -86,7 +112,7 @@ def predict_next_day(
         scaled_pred = model(X)
 
         # Convert back to original scale
-        prediction = dataset.inverse_transform(scaled_pred.cpu())[0][0]
+        prediction = scaler.inverse_transform(scaled_pred.cpu())[0][0]
 
     return prediction
 
@@ -109,17 +135,8 @@ def log_price_predictor(
 ) -> str:
     """
     Log the price predictor model using MLflow
-
-    Args:
-        model: Trained model to save
-        dataset: Dataset used for training (needed for scaler)
-        model_name: Name for the MLflow model
-
-    Returns:
-        Run ID of the MLflow run
     """
     with mlflow.start_run() as run:
-        # Create a temporary directory for artifacts
         with tempfile.TemporaryDirectory() as tmp_dir:
             tmp_dir_path = Path(tmp_dir)
 
@@ -180,17 +197,19 @@ def log_price_predictor(
             if saved_patch:
                 mlflow.set_tag("git.has_uncommitted_changes", "true")
 
+            # Create an example input that matches our expected format
+            example_input = {"data": np.array([314, 315, 316, 317, 318])}
+
             # Log the model with MLflow
             mlflow.pyfunc.log_model(
                 artifact_path=model_name,
                 python_model=PricePredictorWrapper(model, dataset.scaler),
                 artifacts=artifacts,
                 registered_model_name=model_name,
-                pip_requirements=get_python_deps(
-                    exclude_current_package_but_include_its_deps=False
-                ),
-                # infer_code_paths=True, # TODO; this raised an error
                 code_paths=[str(Path(__file__).parent)],
+                input_example=example_input,
             )
+
+        return run.info.run_id
 
         return run.info.run_id
