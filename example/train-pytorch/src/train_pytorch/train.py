@@ -11,8 +11,9 @@ from train_pytorch.constants import (
     WINDOW_SIZE,
 )
 from train_pytorch.dataset import PriceDataset
-from train_pytorch.envelope import log_price_predictor, predict_next_day
 from train_pytorch.model import PricePredictor
+from train_pytorch.wrapper import predict_next_day
+from train_pytorch.wrapper_save import log_price_predictor
 
 
 def train_model(

@@ -7,18 +7,15 @@ WORKDIR /app
 # Copy model files to a standard location
 COPY ./model /app/model
 RUN ls -l /app/model
-
-COPY pyproject.toml ./
-
 # Install model requirements first, then the application
 RUN pip install --no-cache-dir -r /app/model/requirements.txt
 
-COPY README.md ./
+COPY pyproject.toml README.md ./
 RUN mkdir -p ./src/serve_fastapi && touch ./src/serve_fastapi/__init__.py
-RUN pip install --no-cache-dir .
+RUN pip install --no-cache-dir --editable ./
 
 # Copy application files
-COPY . .
+COPY ./ ./
 
 # Set environment variables
 ENV MLFLOW_TRACKING_URI=file:///app/model
@@ -28,4 +25,4 @@ ENV MODEL_PATH=/app/model
 EXPOSE 8000
 
 # Command to run the application
-CMD ["uvicorn", "serve_fastapi.app:app", "--host", "0.0.0.0", "--port", "8000"] 
+CMD uvicorn serve_fastapi.app:app --host 0.0.0.0 --port 8000

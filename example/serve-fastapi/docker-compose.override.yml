@@ -1,7 +1,7 @@
 version: '3'
 services:
   api:
-    image: price-predictor:1
+    image: price-predictor:3
     ports:
       - "8000:8000"
     environment:

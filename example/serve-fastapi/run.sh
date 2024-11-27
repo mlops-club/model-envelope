@@ -19,13 +19,14 @@ function pull_model() {
 }
 
 # assumes the model is already downloaded to $THIS_DIR/model
-function build_image() {
+function build() {
     local version=${1:-"latest"}
 
     # Build the image from THIS_DIR context
     docker build \
         -t "price-predictor:$version" \
         --progress=plain \
+        --no-cache \
         "$THIS_DIR"
 
     # Create docker-compose override file
@@ -56,8 +57,8 @@ function build_and_run() {
 
     clean
     pull_model "$version"
-    build_image "$version"
-    # run "$version" "$port"
+    build "$version"
+    run "$version" "$port"
 }
 
 function help() {
@@ -65,7 +66,7 @@ function help() {
     echo
     echo "Commands:"
     echo "  pull_model [version]            - Pull model from MLflow (defaults to latest)"
-    echo "  build_image [version]           - Build Docker image with model"
+    echo "  build [version]           - Build Docker image with model"
     echo "  run [version] [port]            - Run the API service"
     echo "  build_and_run [version] [port]  - Pull, build, and run in one step"
     echo "  clean                            - Clean up all artifacts"
