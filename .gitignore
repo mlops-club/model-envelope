@@ -6,3 +6,4 @@ data
 *DS_Store*
 *cache*
 *.patch
+example/serve-fastapi/model
