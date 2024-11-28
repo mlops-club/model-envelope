@@ -12,6 +12,16 @@ export MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI:-"file://${THIS_DIR}/../mlruns"
 echo "MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} mlflow artifacts download --artifact-uri \"models:/$MODEL_NAME/1\" --dst-path $THIS_DIR/models"
 # mlflow artifacts download --artifact-uri "models:/$MODEL_NAME/1" --dst-path $THIS_DIR/models | tr -d '[:space:]'
 
+function install() {
+    uv sync
+    uv pip install -r ./model/requirements.txt
+}
+
+function run() {
+    export MODEL_PATH="$THIS_DIR/model"
+    uv run -- uvicorn 'serve_fastapi.app:create_app' --factory --host 0.0.0.0 --port 8000 --reload
+}
+
 function pull_model() {
     local version=${1:-"latest"}  # Default to "latest"
     mkdir -p "$THIS_DIR/model"
@@ -35,7 +45,7 @@ function build() {
     echo "Built image price-predictor:$version"
 }
 
-function run() {
+function run-docker() {
     # Start the service
     docker-compose -f docker-compose.override.yml up
 }
@@ -58,7 +68,7 @@ function build_and_run() {
     clean
     pull_model "$version"
     build "$version"
-    run "$version" "$port"
+    run-docker "$version" "$port"
 }
 
 function help() {

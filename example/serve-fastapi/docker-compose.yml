@@ -4,8 +4,10 @@ services:
     build: .
     ports:
       - "8000:8000"
+    volumes:
+      - ./:/app
     environment:
-      - MLFLOW_TRACKING_URI=file:///app/models
+      - MLFLOW_TRACKING_URI=file:///app/model
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s

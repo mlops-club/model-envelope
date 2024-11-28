@@ -42,7 +42,7 @@ def log_price_predictor(
     model_name: str = "price_predictor",
 ) -> str:
     """
-    Log the price predictor model using MLflow
+    Log the price predictor model using MLflow.
     """
     with mlflow.start_run() as run:
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -95,8 +95,7 @@ def log_price_predictor(
                 mlflow.set_tag("git.user", user)
             if web_url := try_get_git_web_url():
                 mlflow.set_tag("git.web_url", web_url)
-            if saved_patch:
-                mlflow.set_tag("git.has_uncommitted_changes", "true")
+            mlflow.set_tag("git.has_uncommitted_changes", str(saved_patch).lower())
 
             # Create model signature
             from mlflow.models.signature import ModelSignature

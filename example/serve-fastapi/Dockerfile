@@ -5,14 +5,14 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # Copy model files to a standard location
-COPY ./model /app/model
+COPY ./model/requirements.txt /app/model/requirements.txt
 RUN ls -l /app/model
 # Install model requirements first, then the application
-RUN pip install --no-cache-dir -r /app/model/requirements.txt
+RUN pip install -r /app/model/requirements.txt
 
 COPY pyproject.toml README.md ./
 RUN mkdir -p ./src/serve_fastapi && touch ./src/serve_fastapi/__init__.py
-RUN pip install --no-cache-dir --editable ./
+RUN pip install --editable ./
 
 # Copy application files
 COPY ./ ./
@@ -25,4 +25,4 @@ ENV MODEL_PATH=/app/model
 EXPOSE 8000
 
 # Command to run the application
-CMD uvicorn serve_fastapi.app:app --host 0.0.0.0 --port 8000
+CMD uvicorn serve_fastapi.app:app --host 0.0.0.0 --port 8000 --reload
